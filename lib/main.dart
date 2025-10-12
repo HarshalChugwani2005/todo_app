@@ -3,9 +3,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'models/todo_model.dart';
 import 'models/subtask_model.dart';
+import 'models/virtual_pet_model.dart';
 import 'navigation/bottom_nav_bar.dart';
 import 'services/notification_service.dart';
 import 'services/recurring_task_service.dart';
+import 'services/virtual_pet_service.dart';
 import 'theme/theme_provider.dart';
 import 'theme/app_theme.dart';
 
@@ -15,6 +17,7 @@ void main() async {
 
   Hive.registerAdapter(TodoAdapter());
   Hive.registerAdapter(SubtaskAdapter());
+  Hive.registerAdapter(VirtualPetAdapter());
   
   // Try to open the database, if it fails due to schema changes, start fresh
   try {
@@ -29,6 +32,7 @@ void main() async {
     // Re-register adapters
     Hive.registerAdapter(TodoAdapter());
     Hive.registerAdapter(SubtaskAdapter());
+    Hive.registerAdapter(VirtualPetAdapter());
     
     // Try to delete the corrupted database
     try {
@@ -45,12 +49,16 @@ void main() async {
 
   // Initialize services
   await NotificationService().initialize();
+  await VirtualPetService().initialize();
   await RecurringTaskService().processRecurringTasks();
   await RecurringTaskService().scheduleAllNotifications();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => VirtualPetService()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -65,7 +73,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Advanced To-Do App',
+      title: 'TaskPet - Your Productivity Companion',
       themeMode: themeProvider.themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

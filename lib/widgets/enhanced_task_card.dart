@@ -67,7 +67,7 @@ class EnhancedTaskCard extends StatelessWidget {
                         padding: const EdgeInsets.all(4),
                         child: Icon(
                           todo.isDone ? Icons.check : null,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           size: 16,
                         ),
                       ),
@@ -83,7 +83,7 @@ class EnhancedTaskCard extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         decoration: todo.isDone ? TextDecoration.lineThrough : null,
-                        color: todo.isDone ? Colors.grey : null,
+                        color: todo.isDone ? Theme.of(context).colorScheme.onSurfaceVariant : null,
                       ),
                     ),
                   ),
@@ -111,13 +111,13 @@ class EnhancedTaskCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'delete',
                         child: Row(
                           children: [
-                            Icon(Icons.delete, size: 18, color: Colors.red),
-                            SizedBox(width: 8),
-                            Text('Delete', style: TextStyle(color: Colors.red)),
+                            Icon(Icons.delete, size: 18, color: Theme.of(context).colorScheme.error),
+                            const SizedBox(width: 8),
+                            Text('Delete', style: TextStyle(color: Theme.of(context).colorScheme.error)),
                           ],
                         ),
                       ),
@@ -173,14 +173,14 @@ class EnhancedTaskCard extends StatelessWidget {
                     Icon(
                       Icons.checklist,
                       size: 16,
-                      color: Colors.grey[600],
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       '${todo.subtasks.where((s) => s.isDone).length}/${todo.subtasks.length} subtasks',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -235,11 +235,11 @@ class EnhancedTaskCard extends StatelessWidget {
     final now = DateTime.now();
     final difference = date.difference(now).inDays;
     
-    if (difference < 0) return Colors.red;
-    if (difference == 0) return Colors.orange;
-    if (difference <= 2) return Colors.yellow.shade700;
+    if (difference < 0) return AppColors.coralPink;
+    if (difference == 0) return const Color(0xFFFF9500);
+    if (difference <= 2) return const Color(0xFFFFD60A);
     
-    return Colors.green;
+    return AppColors.sageGreen;
   }
 
   Color _getPriorityColor(int priority) {

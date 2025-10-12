@@ -5,14 +5,17 @@ import 'package:provider/provider.dart';
 import '../models/todo_model.dart';
 import '../services/data_service.dart';
 import '../services/recurring_task_service.dart';
+import '../services/virtual_pet_service.dart';
 import '../theme/theme_provider.dart';
 import '../utils/database_helper.dart';
 import '../widgets/enhanced_task_card.dart';
+import '../widgets/virtual_pet_widget.dart';
 import 'statistics_screen.dart';
 import 'pomodoro_screen.dart';
 import 'calendar_screen.dart';
 import 'collaboration_screen.dart';
 import 'cloud_sync_screen.dart';
+import 'virtual_pet_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -98,9 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to export data'),
-            backgroundColor: Colors.red,
+          SnackBar(
+            content: const Text('Failed to export data'),
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -109,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Export error: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -146,7 +149,9 @@ class _HomeScreenState extends State<HomeScreen> {
               content: Text(success 
                   ? 'Data imported successfully!' 
                   : 'Failed to import data'),
-              backgroundColor: success ? Colors.green : Colors.red,
+              backgroundColor: success 
+                  ? Theme.of(context).colorScheme.tertiary 
+                  : Theme.of(context).colorScheme.error,
             ),
           );
         }
@@ -160,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Import error: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }
@@ -212,14 +217,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 10),
                     DropdownButtonFormField<int>(
                       initialValue: selectedPriority,
-                      items: const [
+                      items: [
                         DropdownMenuItem(
                           value: 0,
                           child: Row(
                             children: [
-                              Icon(Icons.priority_high, color: Colors.red),
-                              SizedBox(width: 8),
-                              Text('High Priority'),
+                              Icon(Icons.priority_high, color: Theme.of(context).colorScheme.error),
+                              const SizedBox(width: 8),
+                              const Text('High Priority'),
                             ],
                           ),
                         ),
@@ -227,9 +232,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           value: 1,
                           child: Row(
                             children: [
-                              Icon(Icons.remove, color: Colors.orange),
-                              SizedBox(width: 8),
-                              Text('Medium Priority'),
+                              Icon(Icons.remove, color: Theme.of(context).colorScheme.primary),
+                              const SizedBox(width: 8),
+                              const Text('Medium Priority'),
                             ],
                           ),
                         ),
@@ -237,9 +242,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           value: 2,
                           child: Row(
                             children: [
-                              Icon(Icons.low_priority, color: Colors.green),
-                              SizedBox(width: 8),
-                              Text('Low Priority'),
+                              Icon(Icons.low_priority, color: Theme.of(context).colorScheme.tertiary),
+                              const SizedBox(width: 8),
+                              const Text('Low Priority'),
                             ],
                           ),
                         ),
@@ -462,6 +467,31 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             
+            // VIRTUAL PET WIDGET (Compact)
+            Consumer<VirtualPetService>(
+              builder: (context, petService, child) {
+                if (petService.hasPet && petService.currentPet!.needsAttention) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    child: VirtualPetWidget(
+                      showStats: false,
+                      isCompact: true,
+                      onTap: () {
+                        // Navigate to pet screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VirtualPetScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+            
             // FILTER CHIPS
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -534,6 +564,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           // Handle notifications
                           if (todo.isDone) {
                             await RecurringTaskService().cancelTaskNotification(todo);
+                            
+                            // Reward pet for task completion if we have access to the service
+                            if (context.mounted) {
+                              final petService = Provider.of<VirtualPetService>(context, listen: false);
+                              await petService.rewardPetForTask(todo.priority);
+                            }
                           } else {
                             await RecurringTaskService().rescheduleTaskNotification(todo);
                           }

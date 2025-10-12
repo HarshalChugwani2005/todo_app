@@ -3,6 +3,7 @@ import '../screens/home_screen.dart';
 import '../screens/calendar_screen.dart';
 import '../screens/statistics_screen.dart';
 import '../screens/pomodoro_screen.dart';
+import '../screens/virtual_pet_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -19,6 +20,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     const CalendarScreen(),
     const StatisticsScreen(),
     const PomodoroScreen(),
+    const VirtualPetScreen(),
   ];
 
   @override
@@ -54,6 +56,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             icon: Icon(Icons.timer_outlined),
             activeIcon: Icon(Icons.timer),
             label: 'Focus',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pets_outlined),
+            activeIcon: Icon(Icons.pets),
+            label: 'Pet',
           ),
         ],
       ),

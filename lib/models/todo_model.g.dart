@@ -17,16 +17,15 @@ class TodoAdapter extends TypeAdapter<Todo> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Todo(
-      title: fields[0] as String? ?? 'Untitled Task',
-      isDone: fields[1] as bool? ?? false,
-      category: fields[2] as String? ?? 'Personal',
+      title: fields[0] as String,
+      isDone: fields[1] as bool,
+      category: fields[2] as String,
       dueDate: fields[3] as DateTime?,
-      priority: fields[4] as int? ?? 1, // Default to medium priority
       subtasks: (fields[5] as List?)?.cast<Subtask>(),
-      recurrenceType: fields[6] as int? ?? 0,
+      recurrenceType: fields[6] as int,
       lastRecurrence: fields[7] as DateTime?,
-      isRecurring: fields[8] as bool? ?? false,
-    );
+      isRecurring: fields[8] as bool,
+    ).._priority = fields[4] as int?;
   }
 
   @override

@@ -40,12 +40,10 @@ class AppTheme {
       primary: AppColors.sageGreen,
       secondary: AppColors.coralPink,
       surface: AppColors.softWhite,
-      background: AppColors.cream,
       error: AppColors.error,
       onPrimary: AppColors.textPrimary,
       onSecondary: AppColors.textPrimary,
       onSurface: AppColors.textPrimary,
-      onBackground: AppColors.textPrimary,
       onError: Colors.white,
       tertiary: AppColors.lightPink,
       outline: AppColors.darkSageGreen,
@@ -156,14 +154,14 @@ class AppTheme {
     
     // Switch Theme
     switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.sageGreen;
         }
         return AppColors.textLight;
       }),
-      trackColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.sageGreen.withValues(alpha: 0.3);
         }
         return AppColors.textLight.withValues(alpha: 0.2);
@@ -184,31 +182,45 @@ class AppTheme {
     brightness: Brightness.dark,
     
     // Color Scheme for Dark Mode
-    colorScheme: ColorScheme.dark(
+    colorScheme: const ColorScheme.dark(
       primary: AppColors.sageGreen,
       secondary: AppColors.coralPink,
-      surface: const Color(0xFF1E1E1E),
-      background: const Color(0xFF121212),
+      surface: Color(0xFF1E1E1E),
       error: AppColors.error,
-      onPrimary: Colors.white,
-      onSecondary: Colors.white,
+      onPrimary: Colors.black,
+      onSecondary: Colors.black,
       onSurface: Colors.white,
-      onBackground: Colors.white,
       onError: Colors.white,
       tertiary: AppColors.lightPink,
       outline: AppColors.darkSageGreen,
     ),
     
-    // Keep the same styling but with dark variants
+    // Scaffold
     scaffoldBackgroundColor: const Color(0xFF121212),
     
+    // App Bar
     appBarTheme: const AppBarTheme(
       backgroundColor: Color(0xFF1E1E1E),
       foregroundColor: Colors.white,
       elevation: 0,
       centerTitle: true,
+      titleTextStyle: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
     ),
     
+    // Bottom Navigation
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Color(0xFF1E1E1E),
+      selectedItemColor: AppColors.sageGreen,
+      unselectedItemColor: Colors.grey,
+      type: BottomNavigationBarType.fixed,
+      elevation: 8,
+    ),
+    
+    // Cards
     cardTheme: CardThemeData(
       color: const Color(0xFF1E1E1E),
       elevation: 4,
@@ -218,12 +230,161 @@ class AppTheme {
       ),
     ),
     
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Color(0xFF1E1E1E),
-      selectedItemColor: AppColors.sageGreen,
-      unselectedItemColor: Colors.grey,
-      type: BottomNavigationBarType.fixed,
-      elevation: 8,
+    // Elevated Button
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.sageGreen,
+        foregroundColor: Colors.black,
+        elevation: 2,
+        shadowColor: AppColors.sageGreen.withValues(alpha: 0.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      ),
+    ),
+    
+    // Text Button
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.sageGreen,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    ),
+    
+    // Floating Action Button
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: AppColors.coralPink,
+      foregroundColor: Colors.white,
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    ),
+    
+    // Input Decoration
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: const Color(0xFF2C2C2C),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: AppColors.sageGreen.withValues(alpha: 0.3)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: AppColors.sageGreen.withValues(alpha: 0.3)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.sageGreen, width: 2),
+      ),
+      hintStyle: const TextStyle(color: Colors.grey),
+      labelStyle: const TextStyle(color: Colors.white70),
+    ),
+    
+    // Chip Theme
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.lightPink.withValues(alpha: 0.2),
+      selectedColor: AppColors.sageGreen.withValues(alpha: 0.3),
+      disabledColor: Colors.grey.withValues(alpha: 0.1),
+      labelStyle: const TextStyle(color: Colors.white),
+      secondaryLabelStyle: const TextStyle(color: Colors.white),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      elevation: 0,
+      pressElevation: 2,
+    ),
+    
+    // Switch Theme
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppColors.sageGreen;
+        }
+        return Colors.grey;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppColors.sageGreen.withValues(alpha: 0.3);
+        }
+        return Colors.grey.withValues(alpha: 0.2);
+      }),
+    ),
+    
+    // Slider Theme
+    sliderTheme: SliderThemeData(
+      activeTrackColor: AppColors.sageGreen,
+      inactiveTrackColor: AppColors.sageGreen.withValues(alpha: 0.3),
+      thumbColor: AppColors.sageGreen,
+      overlayColor: AppColors.sageGreen.withValues(alpha: 0.1),
+    ),
+    
+    // Text Theme
+    textTheme: const TextTheme(
+      headlineLarge: TextStyle(color: Colors.white),
+      headlineMedium: TextStyle(color: Colors.white),
+      headlineSmall: TextStyle(color: Colors.white),
+      titleLarge: TextStyle(color: Colors.white),
+      titleMedium: TextStyle(color: Colors.white),
+      titleSmall: TextStyle(color: Colors.white),
+      bodyLarge: TextStyle(color: Colors.white),
+      bodyMedium: TextStyle(color: Colors.white),
+      bodySmall: TextStyle(color: Colors.white70),
+      labelLarge: TextStyle(color: Colors.white),
+      labelMedium: TextStyle(color: Colors.white),
+      labelSmall: TextStyle(color: Colors.white70),
+    ),
+    
+    // Icon Theme
+    iconTheme: const IconThemeData(
+      color: Colors.white,
+    ),
+    
+    // Primary Icon Theme
+    primaryIconTheme: const IconThemeData(
+      color: Colors.white,
+    ),
+    
+    // List Tile Theme
+    listTileTheme: const ListTileThemeData(
+      textColor: Colors.white,
+      iconColor: Colors.white,
+    ),
+    
+    // Divider Theme
+    dividerTheme: const DividerThemeData(
+      color: Colors.grey,
+      thickness: 1,
+    ),
+    
+    // Dialog Theme
+    dialogTheme: DialogThemeData(
+      backgroundColor: const Color(0xFF1E1E1E),
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+      contentTextStyle: const TextStyle(
+        color: Colors.white70,
+        fontSize: 16,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    ),
+    
+    // SnackBar Theme
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: const Color(0xFF2C2C2C),
+      contentTextStyle: const TextStyle(color: Colors.white),
+      actionTextColor: AppColors.sageGreen,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
     ),
   );
 }
