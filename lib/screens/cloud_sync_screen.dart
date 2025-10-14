@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../services/cloud_sync_service.dart';
 import '../utils/database_helper.dart';
+import 'authentication_screen.dart';
 
 class CloudSyncScreen extends StatefulWidget {
   const CloudSyncScreen({super.key});
@@ -133,28 +134,13 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
                               ),
                             ),
                             const SizedBox(height: 16),
-                            TextField(
-                              controller: _emailController,
-                              decoration: const InputDecoration(
-                                labelText: 'Email',
-                                prefixIcon: Icon(Icons.email),
-                                border: OutlineInputBorder(),
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                            const SizedBox(height: 12),
-                            TextField(
-                              controller: _passwordController,
-                              decoration: const InputDecoration(
-                                labelText: 'Password',
-                                prefixIcon: Icon(Icons.lock),
-                                border: OutlineInputBorder(),
-                              ),
-                              obscureText: true,
+                            const Text(
+                              'Connect to Firebase to sync your tasks across devices. Your data will be securely stored in the cloud.',
+                              style: TextStyle(fontSize: 14, color: Colors.grey),
                             ),
                             const SizedBox(height: 16),
                             ElevatedButton.icon(
-                              onPressed: _isLoading ? null : _signIn,
+                              onPressed: _isLoading ? null : _openAuthScreen,
                               icon: _isLoading 
                                   ? const SizedBox(
                                       width: 16,
@@ -162,7 +148,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
                                       child: CircularProgressIndicator(strokeWidth: 2),
                                     )
                                   : const Icon(Icons.login),
-                              label: Text(_isLoading ? 'Signing In...' : 'Sign In'),
+                              label: const Text('Sign In / Sign Up'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
                                 foregroundColor: Colors.white,
@@ -269,32 +255,49 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
                   
                   // Info Card
                   Card(
-                    color: Colors.blue.withValues(alpha: 0.1),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
+                    color: _syncStatus!['isMock'] == true 
+                        ? Colors.orange.withValues(alpha: 0.1)
+                        : Colors.blue.withValues(alpha: 0.1),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.info, color: Colors.blue),
-                              SizedBox(width: 8),
+                              Icon(
+                                _syncStatus!['isMock'] == true 
+                                    ? Icons.science 
+                                    : Icons.info, 
+                                color: _syncStatus!['isMock'] == true 
+                                    ? Colors.orange 
+                                    : Colors.blue,
+                              ),
+                              const SizedBox(width: 8),
                               Text(
-                                'About Cloud Sync',
-                                style: TextStyle(
+                                _syncStatus!['isMock'] == true 
+                                    ? 'Mock Firebase Service' 
+                                    : 'About Cloud Sync',
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(
-                            '• Keep your tasks synchronized across all devices\n'
-                            '• Automatic backup ensures your data is safe\n'
-                            '• Sign in once and access your tasks anywhere\n'
-                            '• Note: This is a demo version using local storage',
-                            style: TextStyle(fontSize: 14),
+                            _syncStatus!['isMock'] == true
+                                ? '🧪 Development Mode Active\n'
+                                  '• Using mock Firebase service for testing\n'
+                                  '• Data stored locally but simulates cloud sync\n'
+                                  '• Ready to switch to real Firebase when configured\n'
+                                  '• All sync features work as intended'
+                                : '• Keep your tasks synchronized across all devices\n'
+                                  '• Automatic backup ensures your data is safe\n'
+                                  '• Sign in once and access your tasks anywhere\n'
+                                  '• Real Firebase authentication and storage',
+                            style: const TextStyle(fontSize: 14),
                           ),
                         ],
                       ),
@@ -306,32 +309,16 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
     );
   }
 
-  Future<void> _signIn() async {
-    if (_emailController.text.trim().isEmpty || _passwordController.text.trim().isEmpty) {
-      _showError('Please enter both email and password');
-      return;
-    }
+  Future<void> _openAuthScreen() async {
+    final result = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (context) => const AuthenticationScreen(),
+      ),
+    );
 
-    setState(() => _isLoading = true);
-
-    try {
-      final success = await _cloudSync.signIn(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
-
-      if (success) {
-        _showSuccess('Signed in successfully!');
-        _emailController.clear();
-        _passwordController.clear();
-        await _loadSyncStatus();
-      } else {
-        _showError('Sign in failed. Please check your credentials.');
-      }
-    } catch (e) {
-      _showError('Sign in error: $e');
-    } finally {
-      setState(() => _isLoading = false);
+    if (result == true) {
+      _showSuccess('Authentication successful!');
+      await _loadSyncStatus();
     }
   }
 

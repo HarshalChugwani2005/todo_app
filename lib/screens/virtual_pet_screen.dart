@@ -170,7 +170,7 @@ class _VirtualPetScreenState extends State<VirtualPetScreen>
             Icon(
               Icons.pets,
               size: 120,
-              color: Theme.of(context).primaryColor.withOpacity(0.5),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 24),
             Text(
@@ -464,7 +464,7 @@ class _VirtualPetScreenState extends State<VirtualPetScreen>
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(
@@ -489,7 +489,7 @@ class _VirtualPetScreenState extends State<VirtualPetScreen>
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.amber.withOpacity(0.1),
+                      color: Colors.amber.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(

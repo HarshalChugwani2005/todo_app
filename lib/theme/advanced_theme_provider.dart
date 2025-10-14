@@ -133,7 +133,7 @@ class AdvancedThemeProvider extends ChangeNotifier {
     notifyListeners();
     
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_accentColorKey, color.value);
+    await prefs.setInt(_accentColorKey, color.toARGB32());
   }
 
   void setFontSize(double size) async {
@@ -150,7 +150,7 @@ class AdvancedThemeProvider extends ChangeNotifier {
     final themeIndex = prefs.getInt(_themeKey) ?? ThemeMode.system.index;
     _themeMode = ThemeMode.values[themeIndex];
     
-    final colorValue = prefs.getInt(_accentColorKey) ?? Colors.blue.value;
+    final colorValue = prefs.getInt(_accentColorKey) ?? Colors.blue.toARGB32();
     _accentColor = Color(colorValue);
     
     _fontSize = prefs.getDouble(_fontSizeKey) ?? 1.0;

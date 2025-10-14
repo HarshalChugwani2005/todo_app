@@ -32,7 +32,7 @@ class AchievementWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: isUnlocked 
-                          ? achievement.rarityColor.withOpacity(0.2)
+                          ? achievement.rarityColor.withValues(alpha: 0.2)
                           : Colors.grey[300],
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
@@ -106,10 +106,10 @@ class AchievementWidget extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: achievement.rarityColor.withOpacity(0.1),
+                      color: achievement.rarityColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: achievement.rarityColor.withOpacity(0.3),
+                        color: achievement.rarityColor.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Text(
@@ -223,9 +223,9 @@ class AchievementProgressWidget extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.1),
+                color: Colors.amber.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.amber.withOpacity(0.3)),
+                border: Border.all(color: Colors.amber.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [

@@ -96,7 +96,7 @@ class _VirtualPetWidgetState extends State<VirtualPetWidget>
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
@@ -158,7 +158,7 @@ class _VirtualPetWidgetState extends State<VirtualPetWidget>
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).primaryColor.withOpacity(0.3),
+          color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
           width: 2,
           style: BorderStyle.solid,
         ),
@@ -340,10 +340,10 @@ class _VirtualPetWidgetState extends State<VirtualPetWidget>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: _getMoodColor(pet.moodEnum).withOpacity(0.1),
+        color: _getMoodColor(pet.moodEnum).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: _getMoodColor(pet.moodEnum).withOpacity(0.3),
+          color: _getMoodColor(pet.moodEnum).withValues(alpha: 0.3),
         ),
       ),
       child: Row(
@@ -395,7 +395,7 @@ class _VirtualPetWidgetState extends State<VirtualPetWidget>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: alertColor.withOpacity(0.1),
+        color: alertColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: alertColor),
       ),
@@ -422,19 +422,19 @@ class _VirtualPetWidgetState extends State<VirtualPetWidget>
     if (pet.needsAttention) {
       return pet.attentionUrgency >= 2 ? Colors.red : Colors.orange;
     }
-    return Theme.of(context).primaryColor.withOpacity(0.3);
+    return Theme.of(context).primaryColor.withValues(alpha: 0.3);
   }
 
   Color _getPetBackgroundColor(VirtualPet pet) {
     switch (pet.petTypeEnum) {
       case PetType.cat:
-        return Colors.orange.withOpacity(0.1);
+        return Colors.orange.withValues(alpha: 0.1);
       case PetType.dog:
-        return Colors.brown.withOpacity(0.1);
+        return Colors.brown.withValues(alpha: 0.1);
       case PetType.plant:
-        return Colors.green.withOpacity(0.1);
+        return Colors.green.withValues(alpha: 0.1);
       case PetType.dragon:
-        return Colors.purple.withOpacity(0.1);
+        return Colors.purple.withValues(alpha: 0.1);
     }
   }
 

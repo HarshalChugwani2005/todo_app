@@ -254,8 +254,8 @@ class _AchievementsScreenState extends State<AchievementsScreen>
           });
         },
         selectedColor: category != null 
-            ? _getCategoryColor(category).withOpacity(0.2)
-            : Theme.of(context).primaryColor.withOpacity(0.2),
+            ? _getCategoryColor(category).withValues(alpha: 0.2)
+            : Theme.of(context).primaryColor.withValues(alpha: 0.2),
         checkmarkColor: category != null 
             ? _getCategoryColor(category)
             : Theme.of(context).primaryColor,
@@ -300,10 +300,10 @@ class _AchievementsScreenState extends State<AchievementsScreen>
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: achievement.rarityColor.withOpacity(0.1),
+                    color: achievement.rarityColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: achievement.rarityColor.withOpacity(0.3),
+                      color: achievement.rarityColor.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Text(
@@ -319,10 +319,10 @@ class _AchievementsScreenState extends State<AchievementsScreen>
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: _getCategoryColor(achievement.category).withOpacity(0.1),
+                    color: _getCategoryColor(achievement.category).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: _getCategoryColor(achievement.category).withOpacity(0.3),
+                      color: _getCategoryColor(achievement.category).withValues(alpha: 0.3),
                     ),
                   ),
                   child: Text(
@@ -340,10 +340,10 @@ class _AchievementsScreenState extends State<AchievementsScreen>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.1),
+                color: Colors.amber.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: Colors.amber.withOpacity(0.3),
+                  color: Colors.amber.withValues(alpha: 0.3),
                 ),
               ),
               child: Text(
