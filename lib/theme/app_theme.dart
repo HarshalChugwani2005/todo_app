@@ -215,9 +215,11 @@ class AppTheme {
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Color(0xFF1E1E1E),
       selectedItemColor: AppColors.sageGreen,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: Colors.white60,
       type: BottomNavigationBarType.fixed,
       elevation: 8,
+      selectedLabelStyle: TextStyle(color: AppColors.sageGreen, fontWeight: FontWeight.w600),
+      unselectedLabelStyle: TextStyle(color: Colors.white60),
     ),
     
     // Cards

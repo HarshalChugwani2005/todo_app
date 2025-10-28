@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'models/todo_model.dart';
 import 'models/subtask_model.dart';
 import 'models/virtual_pet_model.dart';
@@ -11,16 +10,9 @@ import 'services/recurring_task_service.dart';
 import 'services/virtual_pet_service.dart';
 import 'theme/theme_provider.dart';
 import 'theme/app_theme.dart';
-// import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Firebase (Temporarily disabled for development)
-  // TODO: Uncomment when Firebase is properly configured
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
   
   await Hive.initFlutter();
 

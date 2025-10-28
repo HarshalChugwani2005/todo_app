@@ -157,7 +157,9 @@ class TodoTile extends StatelessWidget {
                         Expanded(
                           child: LinearProgressIndicator(
                             value: todo.subtaskProgress,
-                            backgroundColor: Colors.grey[300],
+                            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey[600]
+                                : Colors.grey[300],
                             valueColor: AlwaysStoppedAnimation<Color>(
                               todo.subtaskProgress == 1.0 ? Colors.green : Colors.blue,
                             ),
@@ -177,7 +179,7 @@ class TodoTile extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.checklist, color: Colors.blue),
+                    icon: Icon(Icons.checklist, color: Theme.of(context).primaryColor),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -199,7 +201,7 @@ class TodoTile extends StatelessWidget {
                     tooltip: 'Start Pomodoro',
                   ),
                   IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
+                    icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.error),
                     onPressed: () async => await onDelete(),
                   ),
                 ],

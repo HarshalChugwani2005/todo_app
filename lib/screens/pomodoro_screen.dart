@@ -92,7 +92,9 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                         controller: _countDownController,
                         width: 250,
                         height: 250,
-                        ringColor: Colors.grey[300]!,
+                        ringColor: Theme.of(context).brightness == Brightness.dark 
+                            ? Colors.grey[600]! 
+                            : Colors.grey[300]!,
                         ringGradient: null,
                         fillColor: pomodoroService.phaseColor,
                         fillGradient: null,
@@ -100,9 +102,9 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                         backgroundGradient: null,
                         strokeWidth: 20.0,
                         strokeCap: StrokeCap.round,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontSize: 48.0,
-                          color: Colors.black87,
+                          color: Theme.of(context).textTheme.headlineLarge?.color ?? Colors.black87,
                           fontWeight: FontWeight.bold,
                         ),
                         textFormat: CountdownTextFormat.MM_SS,
@@ -161,7 +163,9 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                         icon: const Icon(Icons.stop),
                         label: const Text('Stop'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,
+                          backgroundColor: Theme.of(context).brightness == Brightness.dark 
+                              ? Colors.grey[700] 
+                              : Colors.grey,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         ),
