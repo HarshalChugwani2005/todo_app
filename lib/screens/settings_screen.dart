@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme/advanced_theme_provider.dart';
+import '../providers/auth_provider.dart';
+import '../widgets/auth_wrapper.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -140,6 +142,34 @@ class SettingsScreen extends StatelessWidget {
               
               const SizedBox(height: 24),
               
+              // Account Section
+              _buildSectionHeader('👤 Account'),
+              Consumer<AuthProvider>(
+                builder: (context, authProvider, child) {
+                  return Card(
+                    child: Column(
+                      children: [
+                        if (authProvider.user != null) ...[
+                          ListTile(
+                            leading: const Icon(Icons.person),
+                            title: Text(authProvider.user!.name),
+                            subtitle: Text(authProvider.user!.email),
+                          ),
+                          const Divider(indent: 16, endIndent: 16),
+                        ],
+                        ListTile(
+                          leading: const Icon(Icons.logout, color: Colors.red),
+                          title: const Text('Sign Out', style: TextStyle(color: Colors.red)),
+                          onTap: () => _showLogoutDialog(context),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              
+              const SizedBox(height: 24),
+              
               // About Section
               _buildSectionHeader('ℹ️ About'),
               Card(
@@ -273,6 +303,30 @@ class SettingsScreen extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Clear All', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Sign Out'),
+        content: const Text('Are you sure you want to sign out?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await AuthNavigation.logout(context);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('Sign Out', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

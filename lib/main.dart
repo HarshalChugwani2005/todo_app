@@ -10,6 +10,9 @@ import 'services/recurring_task_service.dart';
 import 'services/virtual_pet_service.dart';
 import 'theme/theme_provider.dart';
 import 'theme/app_theme.dart';
+import 'providers/auth_provider.dart';
+import 'widgets/auth_wrapper.dart';
+import 'screens/auth/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,14 +80,30 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => VirtualPetService()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: const MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize authentication state
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      authProvider.initAuth();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +115,15 @@ class MyApp extends StatelessWidget {
       themeMode: themeProvider.themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: const MainNavigationScreen(),
+      home: AuthWrapper(
+        child: const MainNavigationScreen(),
+      ),
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => AuthWrapper(
+          child: const MainNavigationScreen(),
+        ),
+      },
     );
   }
 }
