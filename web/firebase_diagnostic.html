@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Auth Diagnostic</title>
+    <meta charset="UTF-8">
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBW9x1100FT6AN4pYwNP_7Kov7-IMrZBJI",
+            authDomain: "taskpet---gamified-todo-df1b8.firebaseapp.com",
+            projectId: "taskpet---gamified-todo-df1b8",
+            storageBucket: "taskpet---gamified-todo-df1b8.firebasestorage.app",
+            messagingSenderId: "278853249268",
+            appId: "1:278853249268:web:39743c2b30bc70026916a1",
+            measurementId: "G-DXBK8HHH5J"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        console.log('Firebase initialized:', app);
+        console.log('Auth instance:', auth);
+
+        // Test Google Sign-In
+        window.testFirebaseGoogleSignIn = async function() {
+            try {
+                const provider = new GoogleAuthProvider();
+                console.log('Starting Firebase Google Sign-In...');
+                
+                const result = await signInWithPopup(auth, provider);
+                console.log('Success!', result.user);
+                
+                document.getElementById('result').innerHTML = `
+                    <div style="color: green;">
+                        <h3>✅ SUCCESS!</h3>
+                        <p><strong>User:</strong> ${result.user.displayName}</p>
+                        <p><strong>Email:</strong> ${result.user.email}</p>
+                        <p><strong>UID:</strong> ${result.user.uid}</p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Firebase Sign-In Error:', error);
+                document.getElementById('result').innerHTML = `
+                    <div style="color: red;">
+                        <h3>❌ ERROR</h3>
+                        <p><strong>Code:</strong> ${error.code}</p>
+                        <p><strong>Message:</strong> ${error.message}</p>
+                        <h4>Common Solutions:</h4>
+                        <ul>
+                            <li>Enable Google Authentication in Firebase Console</li>
+                            <li>Add domain to authorized domains</li>
+                            <li>Check client ID configuration</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>🔥 Firebase Authentication Diagnostic</h1>
+    
+    <div style="background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 8px;">
+        <h3>Project Details:</h3>
+        <p><strong>Project ID:</strong> taskpet---gamified-todo-df1b8</p>
+        <p><strong>Auth Domain:</strong> taskpet---gamified-todo-df1b8.firebaseapp.com</p>
+        <p><strong>Web Client ID:</strong> 278853249268-kj80klonnjvg7rq46nv465ki61drqutf.apps.googleusercontent.com</p>
+    </div>
+
+    <button onclick="testFirebaseGoogleSignIn()" style="
+        background: #4285f4; 
+        color: white; 
+        border: none; 
+        padding: 15px 30px; 
+        border-radius: 5px; 
+        font-size: 16px; 
+        cursor: pointer;
+        margin: 20px 0;
+    ">
+        🧪 Test Firebase Google Sign-In
+    </button>
+
+    <div id="result"></div>
+
+    <div style="background: #fff3cd; padding: 15px; margin: 20px 0; border-radius: 5px;">
+        <h4>📋 Before Testing:</h4>
+        <ol>
+            <li>Go to <a href="https://console.firebase.google.com/project/taskpet---gamified-todo-df1b8" target="_blank">Firebase Console</a></li>
+            <li>Click <strong>Authentication</strong> → <strong>Sign-in method</strong></li>
+            <li>Enable <strong>Google</strong> provider</li>
+            <li>Add <code>localhost</code> to authorized domains</li>
+            <li>Set your email as support email</li>
+            <li>Save and come back to test</li>
+        </ol>
+    </div>
+
+    <script>
+        // Check if page is loaded via HTTP server
+        if (location.protocol === 'file:') {
+            document.body.innerHTML = `
+                <div style="color: red; text-align: center; padding: 50px;">
+                    <h2>⚠️ Please serve this file via HTTP server</h2>
+                    <p>Run: <code>python -m http.server 8080</code></p>
+                    <p>Then visit: <code>http://localhost:8080/firebase_diagnostic.html</code></p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

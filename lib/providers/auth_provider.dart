@@ -25,6 +25,13 @@ class AuthProvider extends ChangeNotifier {
       _isAuthenticated = await _authService.isAuthenticated();
       if (_isAuthenticated) {
         _user = await _authService.getUser();
+      } else {
+        // Try silent Google sign-in
+        final googleResponse = await _authService.silentGoogleSignIn();
+        if (googleResponse != null && googleResponse.success) {
+          _user = googleResponse.user;
+          _isAuthenticated = true;
+        }
       }
     } catch (e) {
       _isAuthenticated = false;
@@ -204,6 +211,32 @@ class AuthProvider extends ChangeNotifier {
   void _clearError() {
     _errorMessage = null;
     notifyListeners();
+  }
+
+  // Google Sign-In
+  Future<bool> signInWithGoogle() async {
+    _clearError();
+    _setLoading(true);
+
+    try {
+      final response = await _authService.signInWithGoogle();
+      
+      if (response.success) {
+        _user = response.user;
+        _isAuthenticated = true;
+        _setLoading(false);
+        notifyListeners();
+        return true;
+      } else {
+        _setError(response.message ?? 'Google Sign-In failed');
+        _setLoading(false);
+        return false;
+      }
+    } catch (e) {
+      _setError('An unexpected error occurred during Google Sign-In');
+      _setLoading(false);
+      return false;
+    }
   }
 
   // Clear error message (call this when user starts typing or navigates)

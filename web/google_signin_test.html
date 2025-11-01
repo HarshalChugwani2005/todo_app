@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Sign-In Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Google Sign-In Library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <h1>Google Sign-In Debug Test</h1>
+    
+    <div id="g_id_onload"
+         data-client_id="278853249268-kj80klonnjvg7rq46nv465ki61drqutf.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+    
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+    
+    <button onclick="testSignIn()">Test Manual Sign-In</button>
+    
+    <div id="result"></div>
+
+    <script>
+        // Initialize Google Sign-In
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            document.getElementById('result').innerHTML = `
+                <h3>Success!</h3>
+                <p>Token received: ${response.credential.substring(0, 50)}...</p>
+            `;
+        }
+
+        function testSignIn() {
+            console.log('Testing manual sign-in...');
+            google.accounts.id.prompt((notification) => {
+                console.log('Notification:', notification);
+            });
+        }
+
+        // Initialize when page loads
+        window.onload = function() {
+            google.accounts.id.initialize({
+                client_id: "278853249268-kj80klonnjvg7rq46nv465ki61drqutf.apps.googleusercontent.com",
+                callback: handleCredentialResponse,
+                auto_select: false,
+                cancel_on_tap_outside: false
+            });
+            
+            google.accounts.id.renderButton(
+                document.querySelector('.g_id_signin'),
+                { 
+                    theme: "outline", 
+                    size: "large",
+                    type: "standard",
+                    text: "signin_with"
+                }
+            );
+        };
+    </script>
+</body>
+</html>

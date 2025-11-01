@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../models/auth_models.dart';
 import '../models/user_model.dart';
+import 'google_auth_service.dart';
 
 class AuthService {
   static const String _baseUrl = 'http://localhost:3000/api/auth';
@@ -11,6 +12,7 @@ class AuthService {
   static const String _userKey = 'user_data';
   
   late Dio _dio;
+  final GoogleAuthService _googleAuthService = GoogleAuthService();
   static const FlutterSecureStorage _secureStorage = FlutterSecureStorage(
     aOptions: AndroidOptions(
       encryptedSharedPreferences: true,
@@ -172,8 +174,50 @@ class AuthService {
       // Continue with logout even if server request fails
     }
     
+    // Sign out from Google as well
+    await _googleAuthService.signOut();
+    
     await clearAuthData();
     return AuthResponse(success: true, message: 'Logged out successfully');
+  }
+
+  // Google Sign-In methods
+  Future<AuthResponse> signInWithGoogle() async {
+    try {
+      // Use mock Google sign-in for development
+      final response = await _googleAuthService.mockGoogleSignIn();
+      
+      if (response.success && response.token != null) {
+        await _saveToken(response.token!);
+        if (response.user != null) {
+          await _saveUser(response.user!);
+        }
+      }
+      
+      return response;
+    } catch (e) {
+      return AuthResponse(
+        success: false,
+        message: 'Google Sign-In failed: ${e.toString()}',
+      );
+    }
+  }
+
+  Future<AuthResponse?> silentGoogleSignIn() async {
+    try {
+      final response = await _googleAuthService.signInSilently();
+      
+      if (response != null && response.success && response.token != null) {
+        await _saveToken(response.token!);
+        if (response.user != null) {
+          await _saveUser(response.user!);
+        }
+      }
+      
+      return response;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<AuthResponse> refreshToken() async {

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/loading_button.dart';
+import '../../widgets/google_signin_button.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 
@@ -20,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _isLoading = false;
+  bool _isGoogleLoading = false;
 
   @override
   void dispose() {
@@ -54,6 +56,31 @@ class _LoginScreenState extends State<LoginScreen> {
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isGoogleLoading = true);
+
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final success = await authProvider.signInWithGoogle();
+
+      if (mounted) {
+        if (success) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        } else {
+          _showErrorSnackBar(authProvider.errorMessage ?? 'Google Sign-In failed');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        _showErrorSnackBar('An unexpected error occurred with Google Sign-In');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isGoogleLoading = false);
       }
     }
   }
@@ -188,6 +215,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 
                 const SizedBox(height: 32),
+                
+                // Google Sign-In Button
+                GoogleSignInButton(
+                  onPressed: _signInWithGoogle,
+                  isLoading: _isGoogleLoading,
+                ),
+                
+                const SizedBox(height: 24),
                 
                 // Divider
                 Row(

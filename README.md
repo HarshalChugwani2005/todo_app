@@ -6,6 +6,7 @@ A Flutter-based productivity app that combines task management with virtual pet 
 
 ### 🔐 Authentication System
 - **User Registration & Login**: Secure signup and signin with email/password
+- **Google Sign-In**: One-tap authentication with Google accounts
 - **Password Recovery**: Forgot password functionality with email-based reset
 - **JWT Authentication**: Token-based authentication with secure storage
 - **Session Management**: Automatic login persistence and logout functionality
@@ -38,6 +39,7 @@ dependencies:
   crypto: ^3.0.3
   flutter_secure_storage: ^9.0.0
   email_validator: ^2.1.17
+  google_sign_in: ^6.2.1
   
   # State Management
   provider: ^6.1.2
@@ -125,7 +127,18 @@ if (success) {
 }
 ```
 
-#### 4. Logout
+#### 4. Google Sign-In
+```dart
+// Example of Google Sign-In
+final authProvider = Provider.of<AuthProvider>(context);
+final success = await authProvider.signInWithGoogle();
+if (success) {
+  // User authenticated with Google account
+  Navigator.pushReplacementNamed(context, '/home');
+}
+```
+
+#### 5. Logout
 ```dart
 // Example of logout
 final authProvider = Provider.of<AuthProvider>(context);
@@ -298,11 +311,61 @@ The app is configured with mock authentication by default. To switch to real API
 3. Replace mock method calls with real API calls
 4. Configure proper error handling for your API response format
 
+## Google Sign-In Setup
+
+### Quick Setup Guide
+
+1. **Install Dependencies**: Already included in `pubspec.yaml`
+
+2. **Firebase Project Setup**:
+   ```bash
+   # Create or use existing Firebase project
+   # Add Android/iOS apps with your package name
+   ```
+
+3. **Android Configuration**:
+   ```bash
+   # Get SHA-1 fingerprint
+   cd android && ./gradlew signingReport
+   
+   # Add SHA-1 to Firebase Console
+   # Download google-services.json to android/app/
+   ```
+
+4. **iOS Configuration**:
+   ```bash
+   # Download GoogleService-Info.plist to ios/Runner/
+   # Add URL scheme from plist to Info.plist
+   ```
+
+5. **Update Web Client ID**:
+   ```dart
+   // In lib/services/google_auth_service.dart
+   static const String _webClientId = 'YOUR_WEB_CLIENT_ID_HERE';
+   ```
+
+📋 **Detailed Setup Instructions**: See `GOOGLE_SIGNIN_SETUP.md` for complete configuration steps.
+
+### Usage
+
+The Google Sign-In button is automatically available on both login and signup screens. Users can:
+- Sign in with existing Google accounts
+- Create new accounts using Google authentication
+- Automatic email verification (Google emails are pre-verified)
+
+### Development Mode
+
+For testing without Firebase setup, the app uses mock Google authentication:
+```dart
+// Returns mock user: john.doe@gmail.com
+await authProvider.signInWithGoogle();
+```
+
 ### Extending Authentication
 To add additional authentication features:
 
-1. **Social Login**: Add Google/Apple sign-in packages
-2. **Biometric Auth**: Implement fingerprint/face ID login
+1. **Apple Sign-In**: Add `sign_in_with_apple` package
+2. **Biometric Auth**: Implement fingerprint/face ID login  
 3. **Two-Factor Auth**: Add TOTP/SMS verification
 4. **Profile Management**: Extend user model and add profile screens
 

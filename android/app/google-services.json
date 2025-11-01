@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "278853249268",
+    "project_id": "taskpet---gamified-todo-df1b8",
+    "storage_bucket": "taskpet---gamified-todo-df1b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278522225369:android:YOUR_ANDROID_APP_ID",
+        "android_client_info": {
+          "package_name": "com.example.todo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278853249268-kj80klonnjvg7rq46nv465ki61drqutf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.todo_app",
+            "certificate_hash": "YOUR_SHA1_CERTIFICATE_HASH"
+          }
+        },
+        {
+          "client_id": "278853249268-kj80klonnjvg7rq46nv465ki61drqutf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW9x1100FT6AN4pYwNP_7Kov7-IMrZBJI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278853249268-kj80klonnjvg7rq46nv465ki61drqutf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "278853249268-kj80klonnjvg7rq46nv465ki61drqutf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todoApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
