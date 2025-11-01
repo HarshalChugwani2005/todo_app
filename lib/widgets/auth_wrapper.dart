@@ -157,12 +157,11 @@ mixin AuthRouteGuard<T extends StatefulWidget> on State<T> {
 class AuthenticatedRoute extends MaterialPageRoute {
   AuthenticatedRoute({
     required WidgetBuilder builder,
-    RouteSettings? settings,
+    super.settings,
   }) : super(
           builder: (context) => AuthGuard(
             child: builder(context),
           ),
-          settings: settings,
         );
 }
 
